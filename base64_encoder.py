@@ -40,22 +40,29 @@ character_to_bin_table = {
 }
 
 
-def binary_sum(arr):#ky funkdion mrtt di parameter nje array te ndare nga 3 elemente secila
+def binary_sum(array):
     word = ''
     equals = ''
-    for string in arr:#iterimi ne array
+    for string in array:
         binary_string = ''
-        for char in string:#iterimi ne string
+        for char in string:
+            # Add padding if the character is a '=' sign
             if char == '=':
-                equals += '='#shtimi i padding si barazime
+                equals += '='
             else:
-                binary_string += bin(ord(char))[2:].rjust(8, '0') # shendrrimi numra binar 8 bitesh qdo char qe nuk eshte barazim
+                # Convert the character to a binary string
+                binary_string += bin(ord(char))[2:].rjust(8, '0')
+
         for i in range(0, len(binary_string), 6):
-            chunk = binary_string[i:i + 6]# marrja 6 nga 6
-            if len(chunk) < 6:# nese eshte me e vogel se 6 ateher beje padding 6
+            # Split into 6 bit chunks
+            chunk = binary_string[i:i + 6]
+            # If the length is shorter than 6 add padding
+            if len(chunk) < 6:
                 chunk = chunk.ljust(6, '0')
-            word += bin_to_character_table[chunk.ljust(6, '0')]#shto shkronjatur i gjen ne array bin_to_chrachter_table
-        word += equals# nese ka barazime shtoj ne fund
+            # Add a character to the word based on the base64 mapping
+            word += bin_to_character_table[chunk.ljust(6, '0')]
+        # If there are any equals add them to the end
+        word += equals
     return word
 
 
@@ -63,6 +70,7 @@ class Base64:
     def __init__(self, base_input, input_type):
         self.file_name = base_input
         self.input_type = input_type
+        # If we get a media file we get the contents of it first
         if input_type == 'image' or input_type == 'video':
             self.binary_data = self.read_contents()
         elif input_type == 'string':
@@ -87,11 +95,11 @@ class Base64:
 
     def encode(self):
         if self.input_type == 'string':
-            # calculate the number of sub-strings needed
+            # Calculate the number of sub-strings needed
             num_substrings = (len(self.binary_data) + 2) // 3
-            # pad the input string with '=' characters as needed
+            # Add padding to the input string with '=' characters as needed
             s = self.binary_data.ljust(num_substrings * 3, '=')
-            # split the padded string into sub-strings
+            # Split and group the string into 3 character long strings
             substrings = [s[i:i + 3] for i in range(0, num_substrings * 3, 3)]
             return binary_sum(substrings)
         else:
