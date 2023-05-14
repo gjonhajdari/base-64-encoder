@@ -36,6 +36,7 @@ character_to_bin_table = {
     '8': '111100', '9': '111101', '+': '111110', '/': '111111'
 }
 
+
 class Base64:
 
     def __init__(self, file_name):
@@ -43,7 +44,18 @@ class Base64:
         self.binary_data = self.read_contents()
 
     def read_contents(self):
-        return
+        # Open image in read binary mode (returns a byte object)
+        with open(self.file_name, 'rb') as image:
+            content = image.read()
+
+        binary_string = ""
+        for byte in content:
+            # Convert the byte to a binary string, remove the 'Ob' prefix and fill with padding if needed
+            binary_value = bin(byte)[2:].zfill(8)
+            # Add byte to our string
+            binary_string += binary_value
+
+        return binary_string
 
     def encode(self):
         # Store the binary string into an array with strings that are 6 characters long
