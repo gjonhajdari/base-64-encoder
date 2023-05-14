@@ -1,3 +1,6 @@
+from PIL import Image
+import io
+
 bin_to_character_table = {
     "000000": "A", "000001": "B", "000010": "C", "000011": "D",
     "000100": "E", "000101": "F", "000110": "G", "000111": "H",
@@ -71,4 +74,13 @@ class Base64:
         return encoded_string
 
     def decode(self, encoded_string):
-        return
+        binary_string = ""
+        for char in encoded_string:
+            # Map the binary chunk to an ASCII character
+            binary_string += character_to_bin_table[char]
+
+        # Convert the binary sting into a byte object
+        byte_data = bytes(int(binary_string[i:i+8], 2) for i in range(0, len(binary_string), 8))
+        # Create an image from
+        image = Image.open(io.BytesIO(byte_data))
+        image.show()
