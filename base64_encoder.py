@@ -40,50 +40,37 @@ character_to_bin_table = {
 }
 
 
+def binary_sum(arr):
+    word = ''
+    equals = ''
+    for string in arr:
+        binary_string = ''
+        for char in string:
+            if char == '=':
+                equals += '='
+            else:
+                binary_string += bin(ord(char))[2:].rjust(8, '0')
+        for i in range(0, len(binary_string), 6):
+            chunk = binary_string[i:i + 6]
+            if len(chunk) < 6:
+                chunk = chunk.ljust(6, '0')
+            word += bin_to_character_table[chunk.ljust(6, '0')]
+        word += equals
+    return word
+
+
 class Base64:
     def __init__(self, base_input, input_type):
         self.file_name = base_input
         self.input_type = input_type
         if input_type == 'image' or input_type == 'video':
             self.binary_data = self.read_contents()
-        else:
+        elif input_type == 'string':
             self.binary_data = base_input
-    def encodeString(self,s):
-        # calculate the number of sub-strings needed
-        num_substrings = (len(s) + 2) // 3
-        # pad the input string with '=' characters as needed
-        s = s.ljust(num_substrings * 3, '=')
-        # split the padded string into sub-strings
-        substrings = [s[i:i+3] for i in range(0, num_substrings*3, 3)]
-        return self.binary_sum(substrings);
-    def decode_string(self,string_input=''):
-        word=""
-        binary_string=''
-        for char in string_input:
-            if char!= '=':
-                binary_string+=character_to_bin_table[char];
-        if(string_input.count('=')==2):
-                 string=binary_string[:-4] 
-        for i in range(0,len(string),8):  
-            word+=chr(int(string[i:i+8],2));
-        return word;
-    def binary_sum(self, arr):
-        word = ''
-        equals=''
-        for string in arr:
-            binary_string = ''
-            for char in string:
-                if char == '=':
-                     equals+='='
-                else:
-                    binary_string += bin(ord(char))[2:].rjust(8, '0')
-            for i in range(0, len(binary_string), 6):
-                chunk = binary_string[i:i+6]
-                if len(chunk) < 6:
-                   chunk = chunk.ljust(6, '0');
-                word+= bin_to_character_table[chunk.ljust(6, '0')]
-            word+=equals;
-        return word;
+        else:
+            print("Invalid input type. Please choose between 'image', 'video' or 'string'")
+            exit()
+
     def read_contents(self):
         # Open image in read binary mode (returns a byte object)
         with open(self.file_name, 'rb') as image:
@@ -100,8 +87,13 @@ class Base64:
 
     def encode(self):
         if self.input_type == 'string':
-            # TODO: @hekurani
-            return encoded_string
+            # calculate the number of sub-strings needed
+            num_substrings = (len(self.binary_data) + 2) // 3
+            # pad the input string with '=' characters as needed
+            s = self.binary_data.ljust(num_substrings * 3, '=')
+            # split the padded string into sub-strings
+            substrings = [s[i:i + 3] for i in range(0, num_substrings * 3, 3)]
+            return binary_sum(substrings)
         else:
             # Store the binary string into an array with strings that are 6 characters long
             binary_chunks = [self.binary_data[i:i + 6] for i in range(0, len(self.binary_data), 6)]
@@ -117,8 +109,18 @@ class Base64:
 
     def decode(self, encoded_string):
         if self.input_type == 'string':
-            # TODO: @hekurani
-            print("Decoded message: ")
+            word = ""
+            binary_string = ''
+            for char in encoded_string:
+                if char != '=':
+                    binary_string += character_to_bin_table[char]
+            if encoded_string.count('=') == 2:
+                binary_string = binary_string[:-4]
+
+            for i in range(0, len(binary_string), 8):
+                word += chr(int(binary_string[i:i + 8], 2))
+
+            print("Decoded message: " + word)
 
         elif self.input_type == 'video':
             print("A video cannot be constructed...yet")
@@ -131,7 +133,7 @@ class Base64:
                 binary_string += character_to_bin_table[char]
 
             # Convert the binary sting into a byte object
-            byte_data = bytes(int(binary_string[i:i+8], 2) for i in range(0, len(binary_string), 8))
+            byte_data = bytes(int(binary_string[i:i + 8], 2) for i in range(0, len(binary_string), 8))
             # Create an image from
             image = Image.open(io.BytesIO(byte_data))
             image.show()

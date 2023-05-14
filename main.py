@@ -1,7 +1,12 @@
 from base64_encoder import Base64
 
-image_object = Base64('image.png', 'image')
-encoded_image = image_object.encode()
-# print(encoded_image)
+message = "Hi"
+image_file = 'image.png'
+video_file = 'video.mp4'
 
-image_object.decode(encoded_image)
+b64 = Base64(message, 'string')
+
+encoded_output = b64.encode()
+print("Encoded output: " + encoded_output)
+
+b64.decode(encoded_output)
