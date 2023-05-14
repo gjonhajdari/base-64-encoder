@@ -42,9 +42,14 @@ character_to_bin_table = {
 
 class Base64:
 
-    def __init__(self, file_name):
-        self.file_name = file_name
-        self.binary_data = self.read_contents()
+    def __init__(self, base_input, input_type):
+        self.file_name = base_input
+        self.input_type = input_type
+        if input_type == 'image' or input_type == 'video':
+            self.binary_data = self.read_contents()
+        else:
+            self.binary_data = base_input
+
 
     def read_contents(self):
         # Open image in read binary mode (returns a byte object)
@@ -61,26 +66,39 @@ class Base64:
         return binary_string
 
     def encode(self):
-        # Store the binary string into an array with strings that are 6 characters long
-        binary_chunks = [self.binary_data[i:i + 6] for i in range(0, len(self.binary_data), 6)]
-        encoded_string = ""
-        for binary_string in binary_chunks:
-            if len(binary_string) != 6:
-                continue
-            else:
-                # Map the binary chunk to an ASCII character
-                encoded_string += bin_to_character_table[binary_string]
+        if self.input_type == 'string':
+            # TODO: @hekurani
+            return encoded_string
+        else:
+            # Store the binary string into an array with strings that are 6 characters long
+            binary_chunks = [self.binary_data[i:i + 6] for i in range(0, len(self.binary_data), 6)]
+            encoded_string = ""
+            for binary_string in binary_chunks:
+                if len(binary_string) != 6:
+                    continue
+                else:
+                    # Map the binary chunk to an ASCII character
+                    encoded_string += bin_to_character_table[binary_string]
 
-        return encoded_string
+            return encoded_string
 
     def decode(self, encoded_string):
-        binary_string = ""
-        for char in encoded_string:
-            # Map the binary chunk to an ASCII character
-            binary_string += character_to_bin_table[char]
+        if self.input_type == 'string':
+            # TODO: @hekurani
+            print("Decoded message: ")
 
-        # Convert the binary sting into a byte object
-        byte_data = bytes(int(binary_string[i:i+8], 2) for i in range(0, len(binary_string), 8))
-        # Create an image from
-        image = Image.open(io.BytesIO(byte_data))
-        image.show()
+        elif self.input_type == 'video':
+            print("A video cannot be constructed...yet")
+            return
+
+        else:
+            binary_string = ""
+            for char in encoded_string:
+                # Map the binary chunk to an ASCII character
+                binary_string += character_to_bin_table[char]
+
+            # Convert the binary sting into a byte object
+            byte_data = bytes(int(binary_string[i:i+8], 2) for i in range(0, len(binary_string), 8))
+            # Create an image from
+            image = Image.open(io.BytesIO(byte_data))
+            image.show()
