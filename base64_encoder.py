@@ -40,22 +40,22 @@ character_to_bin_table = {
 }
 
 
-def binary_sum(arr):
+def binary_sum(arr):#ky funkdion mrtt di parameter nje array te ndare nga 3 elemente secila
     word = ''
     equals = ''
-    for string in arr:
+    for string in arr:#iterimi ne array
         binary_string = ''
-        for char in string:
+        for char in string:#iterimi ne string
             if char == '=':
-                equals += '='
+                equals += '='#shtimi i padding si barazime
             else:
-                binary_string += bin(ord(char))[2:].rjust(8, '0')
+                binary_string += bin(ord(char))[2:].rjust(8, '0') # shendrrimi numra binar 8 bitesh qdo char qe nuk eshte barazim
         for i in range(0, len(binary_string), 6):
-            chunk = binary_string[i:i + 6]
-            if len(chunk) < 6:
+            chunk = binary_string[i:i + 6]# marrja 6 nga 6
+            if len(chunk) < 6:# nese eshte me e vogel se 6 ateher beje padding 6
                 chunk = chunk.ljust(6, '0')
-            word += bin_to_character_table[chunk.ljust(6, '0')]
-        word += equals
+            word += bin_to_character_table[chunk.ljust(6, '0')]#shto shkronjatur i gjen ne array bin_to_chrachter_table
+        word += equals# nese ka barazime shtoj ne fund
     return word
 
 
@@ -107,17 +107,17 @@ class Base64:
 
             return encoded_string
 
-    def decode(self, encoded_string):
+    def decode(self, encoded_string):#dekodimi
         if self.input_type == 'string':
             word = ""
             binary_string = ''
-            for char in encoded_string:
-                if char != '=':
+            for char in encoded_string:# iterimi ne qdo shkroj te encoded string
+                if char != '=':#nese char nuk eshte = ateher shto brenda 6 bit per qdo shkronj ne kordinim me tabelen e lart-formuar
                     binary_string += character_to_bin_table[char]
-            if encoded_string.count('=') == 2:
+            if encoded_string.count('=') == 2:# nese ka 2 barazime ateher heqi 4 elementet e fundit sepse jan shtuar si paadding
                 binary_string = binary_string[:-4]
 
-            for i in range(0, len(binary_string), 8):
+            for i in range(0, len(binary_string), 8):#merri 8 bita nga 8 ne fund ne nje string qe ska barazime dhe as padding
                 word += chr(int(binary_string[i:i + 8], 2))
 
             print("Decoded message: " + word)
