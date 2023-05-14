@@ -1,6 +1,6 @@
 from base64_encoder import Base64
 
-message = "Hi"
+message = "Hello world!"
 image_file = 'image.png'
 video_file = 'video.mp4'
 
