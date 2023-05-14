@@ -41,7 +41,6 @@ character_to_bin_table = {
 
 
 class Base64:
-
     def __init__(self, base_input, input_type):
         self.file_name = base_input
         self.input_type = input_type
@@ -49,8 +48,42 @@ class Base64:
             self.binary_data = self.read_contents()
         else:
             self.binary_data = base_input
-
-
+    def encodeString(self,s):
+        # calculate the number of sub-strings needed
+        num_substrings = (len(s) + 2) // 3
+        # pad the input string with '=' characters as needed
+        s = s.ljust(num_substrings * 3, '=')
+        # split the padded string into sub-strings
+        substrings = [s[i:i+3] for i in range(0, num_substrings*3, 3)]
+        return self.binary_sum(substrings);
+    def decode_string(self,string_input=''):
+        word=""
+        binary_string=''
+        for char in string_input:
+            if char!= '=':
+                binary_string+=character_to_bin_table[char];
+        if(string_input.count('=')==2):
+                 string=binary_string[:-4] 
+        for i in range(0,len(string),8):  
+            word+=chr(int(string[i:i+8],2));
+        return word;
+    def binary_sum(self, arr):
+        word = ''
+        equals=''
+        for string in arr:
+            binary_string = ''
+            for char in string:
+                if char == '=':
+                     equals+='='
+                else:
+                    binary_string += bin(ord(char))[2:].rjust(8, '0')
+            for i in range(0, len(binary_string), 6):
+                chunk = binary_string[i:i+6]
+                if len(chunk) < 6:
+                   chunk = chunk.ljust(6, '0');
+                word+= bin_to_character_table[chunk.ljust(6, '0')]
+            word+=equals;
+        return word;
     def read_contents(self):
         # Open image in read binary mode (returns a byte object)
         with open(self.file_name, 'rb') as image:
