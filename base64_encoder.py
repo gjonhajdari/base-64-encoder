@@ -115,17 +115,19 @@ class Base64:
 
             return encoded_string
 
-    def decode(self, encoded_string):#dekodimi
+    def decode(self, encoded_string):
         if self.input_type == 'string':
             word = ""
             binary_string = ''
-            for char in encoded_string:# iterimi ne qdo shkroj te encoded string
-                if char != '=':#nese char nuk eshte = ateher shto brenda 6 bit per qdo shkronj ne kordinim me tabelen e lart-formuar
+            for char in encoded_string:
+                # If the character is not a padding character map it to it's corresponding bits
+                if char != '=':
                     binary_string += character_to_bin_table[char]
-            if encoded_string.count('=') == 2:# nese ka 2 barazime ateher heqi 4 elementet e fundit sepse jan shtuar si paadding
+            # If there are two equal signs remove the last 4 characters since they're used for padding
+            if encoded_string.count('=') == 2:
                 binary_string = binary_string[:-4]
-
-            for i in range(0, len(binary_string), 8):#merri 8 bita nga 8 ne fund ne nje string qe ska barazime dhe as padding
+            # Get the binary string by 8 bit chunks and convert it to an ASCII character
+            for i in range(0, len(binary_string), 8):
                 word += chr(int(binary_string[i:i + 8], 2))
 
             print("Decoded message: " + word)
