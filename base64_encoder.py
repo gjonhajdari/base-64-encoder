@@ -56,9 +56,6 @@ def binary_sum(array):
         for i in range(0, len(binary_string), 6):
             # Split into 6 bit chunks
             chunk = binary_string[i:i + 6]
-            # If the length is shorter than 6 add padding
-            if len(chunk) < 6:
-                chunk = chunk.ljust(6, '0')
             # Add a character to the word based on the base64 mapping
             word += bin_to_character_table[chunk.ljust(6, '0')]
         # If there are any equals add them to the end
