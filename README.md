@@ -1,16 +1,17 @@
 # base64-encoder
 University project in Data Security. A simple base64 encoder that can encode and decode messages, images and videos.
-> **_Note:_** video decoding currently is not implemented.
 
-### Example use case
+## Syntax
+
+The `[mode]` parameter can be `'string'`, `'image'` or `'video'`. 
+> _**Note:** video decoding currently is not implemented._
 
 ```python
 # import the class
 from base64_encoder import Base64
 
 # initialize the object with the message or file and type parameter
-# type can be 'string', 'image' or 'video'
-b64 = Base64('Hello world!', 'string')
+b64 = Base64([message], [mode])
 
 # encode the data and print it
 encoded_output = b64.encode()
