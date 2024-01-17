@@ -1,10 +1,10 @@
 # base64-encoder
-University project in Data Security. A simple base64 encoder that can encode and decode messages, images and videos.
+University project in Data Security. A simple python base64 encoder that can encode and decode messages, images and videos.
 
 ## Syntax
 
 The `[mode]` parameter can be `'string'`, `'image'` or `'video'`. 
-> _**Note:** video decoding currently is not implemented._
+> **Note:** although video encoding works, decoding is currently not implemented.
 
 ```python
 # import the class
