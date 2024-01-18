@@ -3,7 +3,7 @@ University project in Data Security. A simple python base64 encoder that can enc
 
 ## Syntax
 
-The `[mode]` parameter can be `'string'`, `'image'` or `'video'`. 
+The `mode` parameter can be `'string'`, `'image'` or `'video'`. 
 > **Note:** although video encoding works, decoding is currently not implemented.
 
 ```python
@@ -11,7 +11,7 @@ The `[mode]` parameter can be `'string'`, `'image'` or `'video'`.
 from base64_encoder import Base64
 
 # initialize the object with the message or file and type parameter
-b64 = Base64([message], [mode])
+b64 = Base64(message_or_file, mode)
 
 # encode the data and print it
 encoded_output = b64.encode()
