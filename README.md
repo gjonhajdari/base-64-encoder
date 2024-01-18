@@ -4,7 +4,6 @@ University project in Data Security. A simple python base64 encoder that can enc
 ## Syntax
 
 The `mode` parameter can be `'string'`, `'image'` or `'video'`. 
-> **Note:** although video encoding works, decoding is currently not implemented.
 
 ```python
 # import the class
@@ -20,6 +19,8 @@ print(encoded_output)
 # decode the base64 data
 b64.decode(encoded_output)
 ```
+
+> **Note:** although video encoding works, decoding is currently not implemented.
 
 ## How it works
 
